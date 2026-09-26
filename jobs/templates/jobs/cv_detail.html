@@ -1,0 +1,15 @@
+<h2>{{ cv.name }}</h2>
+
+<p>CV file: {{ cv.file.name }}</p>
+
+<h3>AI Analysis</h3>
+
+<p><strong>Technical skills:</strong></p>
+
+<ul>
+    {% for skill in analysis.skills %}
+        <li>{{ skill }}</li>
+    {% endfor %}
+</ul>
+
+<p>Skill count: {{ analysis.skill_count }}</p>

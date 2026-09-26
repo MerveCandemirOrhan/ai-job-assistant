@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>{{ job.title }}</title>
+    <link rel="stylesheet" href="{% static 'jobs/style.css' %}">
+</head>
+<body>
+
+
+<div class="job-card">
+    <h1>{{ job.title }}</h1>
+
+    <p><strong>Company:</strong> {{ job.company }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+
+    <p>{{ job.description }}</p>
+
+    <h2>AI Analysis</h2>
+
+    <p><strong>Required technical skills:</strong></p>
+
+    {% if analysis.skills %}
+        <ul>
+            {% for skill in analysis.skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+
+        <p>Skill count: {{ analysis.skill_count }}</p>
+    {% else %}
+        <p>No technical skills found.</p>
+    {% endif %}
+
+    <h2>CV Match</h2>
+
+{% if match_result and match_result.total_job_skills > 0 %}
+
+    <div class="match-score">
+
+        <p>
+            <strong>Match Score:</strong>
+            {{ match_result.match_score }}%
+        </p>
+
+        <p>
+            {{ match_result.matched_skills|length }}
+            /
+            {{ match_result.total_job_skills }}
+            required skills matched.
+        </p>
+
+        <div class="match-bar">
+            <div
+                class="match-fill"
+                style="width: {{ match_result.match_score }}%;"
+            ></div>
+        </div>
+
+    </div>
+
+    <p><strong>Matched Skills:</strong></p>
+
+    <ul>
+        {% for skill in match_result.matched_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Missing Skills:</strong></p>
+
+    <ul>
+        {% for skill in match_result.missing_skills %}
+            <li>{{ skill }}</li>
+        {% endfor %}
+    </ul>
+
+{% else %}
+
+    {% if match_result %}
+        <p>
+            No technical skills were specified in this job posting.
+            A match score cannot be calculated.
+        </p>
+    {% else %}
+        <p>You haven't uploaded a CV yet.</p>
+
+        <a href="{% url 'upload_cv' %}">Upload your CV</a>
+    {% endif %}
+
+{% endif %}
+
+    <a class="job-link" href="{{ job.url }}" target="_blank">
+        İlana Git
+    </a>
+</div>
+
+<a href="{% url 'job_list' %}">← Tüm İlanlara Dön</a>
+
+
+</body>
+</html>

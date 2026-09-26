@@ -1,0 +1,108 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Jobs</title>
+    <link rel="stylesheet" href="{% static 'jobs/style.css' %}">
+</head>
+<body>
+
+    <h1>Available Jobs</h1>
+
+    <form method="GET" class="search-form">
+
+    <input 
+        type="text" 
+        name="search" 
+        placeholder="Search jobs..."
+        value="{{ request.GET.search }}"
+    >
+
+    <select name="location">
+        <option value="" {% if not request.GET.location %}selected{% endif %}>
+    All Locations
+</option>
+        <option value="Amsterdam" {% if request.GET.location == "Amsterdam" %}selected{% endif %}>Amsterdam</option>
+
+        <option value="Rotterdam" {% if request.GET.location == "Rotterdam" %}selected{% endif %}>Rotterdam</option>
+
+        <option value="Utrecht" {% if request.GET.location == "Utrecht" %}selected{% endif %}>Utrecht</option>
+
+        <option value="Amersfoort" {% if request.GET.location == "Amersfoort" %}selected{% endif %}>Amersfoort</option> 
+    </select>
+
+    <select name="job_type">
+    <option value="" {% if not request.GET.job_type %}selected{% endif %}>
+        All Job Types
+    </option>
+
+    <option value="Full-time" {% if request.GET.job_type == "Full-time" %}selected{% endif %}>
+        Full-time
+    </option>
+
+    <option value="Part-time" {% if request.GET.job_type == "Part-time" %}selected{% endif %}>
+        Part-time
+    </option>
+
+    <option value="Internship" {% if request.GET.job_type == "Internship" %}selected{% endif %}>
+        Internship
+    </option>
+
+    <option value="Contract" {% if request.GET.job_type == "Contract" %}selected{% endif %}>
+        Contract
+    </option>
+</select>
+
+    <button type="submit">Search</button>
+
+</form>
+
+    {% for job in jobs %}
+    <div class="job-card">
+        <h2>
+            <a href="{% url 'job_detail' job.id %}">
+                {{ job.title }}
+            </a>
+        </h2>
+
+        <p><strong>Company:</strong> {{ job.company }}</p>
+        <div class="job-meta">
+    <span class="badge">📍 {{ job.location }}</span>
+    <span class="badge">💼 {{ job.job_type }}</span>
+</div>
+        <p><strong>Posted:</strong> {{ job.created_at|date:"d F Y" }}</p>
+        <p>{{ job.description }}</p>
+
+        <a class="job-link" href="{{ job.url }}" target="_blank">
+            İlana Git
+        </a>
+    </div>
+
+{% empty %}
+
+    <p>Aradığınız kriterlere uygun iş ilanı bulunamadı.</p>
+
+{% endfor %}
+<div class="pagination">
+
+    {% if jobs.has_previous %}
+        <a href="?search={{ request.GET.search }}&location={{ request.GET.location }}&job_type={{ request.GET.job_type }}&page={{ jobs.previous_page_number }}">
+            Previous
+        </a>
+    {% endif %}
+
+    <span>
+        Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
+    </span>
+
+    {% if jobs.has_next %}
+        <a href="?search={{ request.GET.search }}&location={{ request.GET.location }}&job_type={{ request.GET.job_type }}&page={{ jobs.next_page_number }}">
+            Next
+        </a>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
