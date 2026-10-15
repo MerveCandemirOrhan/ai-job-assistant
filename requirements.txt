@@ -4,3 +4,5 @@ sqlparse==0.5.5
 openai
 python-dotenv
 pypdf
+gunicorn==26.2.0
+whitenoise==6.12.0
