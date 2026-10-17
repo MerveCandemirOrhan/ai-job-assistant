@@ -11,7 +11,10 @@ from job_analyzer import (
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import RegisterForm, CVUploadForm
 from django.contrib.auth.decorators import login_required
+from django.http import FileResponse, Http404
+from pathlib import Path
 
+@login_required
 def job_list(request):
     search = request.GET.get("search")
     location = request.GET.get("location")
@@ -42,6 +45,7 @@ def job_list(request):
         "jobs/job_list.html",
         {"jobs": page_obj}
 )
+@login_required
 def job_detail(request, job_id):
     job = get_object_or_404(Job, id=job_id)
     cv = CV.objects.filter(user=request.user).first()
@@ -80,6 +84,7 @@ def job_detail(request, job_id):
         }
     )
 
+@login_required
 def cv_detail(request, cv_id):
     cv = get_object_or_404(CV, id=cv_id, user=request.user)
 
@@ -100,6 +105,13 @@ def cv_detail(request, cv_id):
             "analysis": analysis,
         }
     )
+
+
+def home(request):
+    if request.user.is_authenticated:
+        return redirect("job_list")
+
+    return render(request, "jobs/home.html")
 
 def register(request):
     if request.method == "POST":
@@ -135,4 +147,26 @@ def upload_cv(request):
         request,
         "jobs/upload_cv.html",
         {"form": form},
+    )
+
+@login_required
+def my_cvs(request):
+    cvs = CV.objects.filter(user=request.user).order_by("-uploaded_at")
+
+    return render(
+        request,
+        "jobs/my_cvs.html",
+        {"cvs": cvs},
+    )
+@login_required
+def download_cv(request, cv_id):
+    cv = get_object_or_404(CV, id=cv_id, user=request.user)
+
+    if not cv.file:
+        raise Http404("CV dosyası bulunamadı.")
+
+    return FileResponse(
+        cv.file.open("rb"),
+        as_attachment=False,
+        filename=Path(cv.file.name).name,
     )

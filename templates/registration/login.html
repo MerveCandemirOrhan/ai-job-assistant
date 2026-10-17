@@ -1,19 +1,168 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Assistant | Giriş Yap</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background:
+                radial-gradient(ellipse at 15% 20%, #7c83ff 0%, transparent 45%),
+                radial-gradient(ellipse at 85% 75%, #b18cff 0%, transparent 45%),
+                linear-gradient(135deg, #111a3b, #263c75, #30245c);
+            color: white;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 430px;
+            padding: 38px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .brand {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #d8d8ff;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            margin: 16px 0 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #e0e4ff;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        form p {
+            margin-bottom: 18px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #f0f1ff;
+        }
+
+        form input {
+            width: 100%;
+            padding: 13px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.92);
+            color: #202747;
+            font-size: 16px;
+        }
+
+        form input:focus {
+            outline: 2px solid #c2b8ff;
+            border-color: transparent;
+        }
+
+        ul.errorlist {
+            color: #ffe0e0;
+            font-size: 13px;
+            padding-left: 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #c3b6ff, #ffffff);
+            color: #22264e;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 24px;
+            color: #e0e4ff;
+            font-size: 14px;
+        }
+
+        a {
+            color: white;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 28px 22px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <main class="card">
+        <div class="brand">AI Job Assistant</div>
 
-<h1>Login</h1>
+        <h1>Tekrar Hoş Geldin!</h1>
+        <p class="subtitle">
+            Hayalindeki işe giden yolda kaldığın yerden devam et.
+        </p>
 
-<form method="post">
-    {% csrf_token %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {{ form.as_p }}
 
-    {{ form.as_p }}
+            <button class="submit-btn" type="submit">
+                Giriş Yap
+            </button>
+        </form>
 
-    <button type="submit">Login</button>
-</form>
-
+        <p class="footer">
+            Henüz hesabın yok mu?
+            <a href="{% url 'register' %}">Kayıt ol</a>
+        </p>
+    </main>
 </body>
 </html>

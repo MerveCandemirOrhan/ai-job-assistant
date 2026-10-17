@@ -1,15 +1,213 @@
-<h2>{{ cv.name }}</h2>
 
-<p>CV file: {{ cv.file.name }}</p>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Assistant | CV Analizi</title>
 
-<h3>AI Analysis</h3>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-<p><strong>Technical skills:</strong></p>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #202747;
+            background:
+                radial-gradient(ellipse at 10% 5%, rgba(124, 131, 255, 0.22), transparent 40%),
+                radial-gradient(ellipse at 95% 90%, rgba(177, 140, 255, 0.22), transparent 40%),
+                #f4f5ff;
+        }
 
-<ul>
-    {% for skill in analysis.skills %}
-        <li>{{ skill }}</li>
-    {% endfor %}
-</ul>
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
 
-<p>Skill count: {{ analysis.skill_count }}</p>
+        .header {
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 12px 35px rgba(42, 49, 105, 0.08);
+        }
+
+        .brand {
+            color: #7770df;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 16px 0 10px;
+            color: #252d59;
+            font-size: clamp(27px, 5vw, 36px);
+            overflow-wrap: anywhere;
+        }
+
+        .subtitle {
+            color: #6a6e87;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        .panel {
+            margin-bottom: 22px;
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(42, 49, 105, 0.06);
+        }
+
+        h2 {
+            margin: 0 0 20px;
+            color: #30376e;
+            font-size: 21px;
+        }
+
+        .file-name {
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: #f0efff;
+            color: #57518f;
+            overflow-wrap: anywhere;
+            line-height: 1.6;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .skills li {
+            padding: 10px 15px;
+            border: 1px solid #e1dcff;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #f0efff, #f8f4ff);
+            color: #57518f;
+            font-size: 14px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .stat-number {
+            display: flex;
+            width: 76px;
+            height: 76px;
+            flex-shrink: 0;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #7778ed, #a58ae8);
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            box-shadow: 0 8px 20px rgba(119, 120, 237, 0.22);
+        }
+
+        .stat-label {
+            color: #6a6e87;
+            line-height: 1.6;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 6px 0 20px;
+            color: #6960c7;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 22px 14px;
+            }
+
+            .header,
+            .panel {
+                padding: 23px 20px;
+            }
+
+            .stats {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <section class="header">
+            <div class="brand">AI Job Assistant</div>
+
+            <h1>✨ CV Analiz Raporu</h1>
+
+            <p class="subtitle">
+                CV'nde tespit edilen teknik becerileri ve analiz özetini burada inceleyebilirsin.
+            </p>
+        </section>
+
+        <section class="panel">
+            <h2>📄 CV Bilgileri</h2>
+
+            <p><strong>CV adı:</strong> {{ cv.name }}</p>
+
+            <p><strong>Dosya:</strong></p>
+            <div class="file-name">{{ cv.file.name }}</div>
+        </section>
+
+        <section class="panel">
+            <h2>💡 Tespit Edilen Teknik Beceriler</h2>
+
+            <ul class="skills">
+                {% for skill in analysis.skills %}
+                    <li>{{ skill }}</li>
+                {% empty %}
+                    <li>Henüz teknik beceri tespit edilmedi.</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="panel">
+            <h2>📊 Analiz Özeti</h2>
+
+            <div class="stats">
+                <div class="stat-number">{{ analysis.skill_count }}</div>
+
+                <div>
+                    <strong>Tespit edilen beceri sayısı</strong>
+                    <p class="stat-label">
+                        CV'nde belirlenen teknik becerilerin toplamı.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <a class="back-link" href="{% url 'my_cvs' %}">
+            ← CV'lerime geri dön
+        </a>
+    </main>
+</body>
+</html>

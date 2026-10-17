@@ -1,104 +1,323 @@
+
 {% load static %}
-
 <!DOCTYPE html>
-
-<html>
+<html lang="tr">
 <head>
-    <title>{{ job.title }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ job.title }} | AI Job Assistant</title>
     <link rel="stylesheet" href="{% static 'jobs/style.css' %}">
+
+    <style>
+        .detail-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .detail-header {
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,.9);
+            border-radius: 24px;
+            background: rgba(255,255,255,.85);
+            box-shadow: 0 12px 35px rgba(42,49,105,.08);
+        }
+
+        .brand {
+            color: #7770df;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .detail-header h1 {
+            margin-top: 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .detail-panel {
+            margin-bottom: 22px;
+            padding: 28px;
+            border: 1px solid rgba(255,255,255,.95);
+            border-radius: 20px;
+            background: rgba(255,255,255,.9);
+            box-shadow: 0 10px 30px rgba(42,49,105,.06);
+        }
+
+        .detail-panel h2 {
+            color: #30376e;
+            margin-top: 0;
+        }
+
+        .detail-panel p {
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0;
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 9px 14px;
+            border: 1px solid #e1dcff;
+            border-radius: 30px;
+            background: #f0efff;
+            color: #57518f;
+            font-size: 14px;
+            font-weight: 600;
+            overflow-wrap: anywhere;
+        }
+
+        .score-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .score-number {
+            color: #7770df;
+            font-size: 34px;
+            font-weight: 800;
+        }
+
+        .match-bar {
+            width: 100%;
+            height: 14px;
+            margin: 18px 0;
+            overflow: hidden;
+            border-radius: 30px;
+            background: #e8e8f5;
+        }
+
+        .match-fill {
+            height: 100%;
+            border-radius: 30px;
+            background: linear-gradient(90deg, #7778ed, #b18cff);
+            transition: width .4s ease;
+        }
+
+        .match-columns {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .skill-group {
+            padding: 20px;
+            border-radius: 15px;
+            background: #f8f7ff;
+        }
+
+        .skill-group h3 {
+            margin-top: 0;
+            color: #454487;
+            font-size: 16px;
+        }
+
+        .skill-group ul {
+            padding-left: 20px;
+            line-height: 2;
+            overflow-wrap: anywhere;
+        }
+
+        .notice {
+            padding: 18px;
+            border-radius: 13px;
+            background: #f0efff;
+            color: #57518f;
+            line-height: 1.7;
+        }
+
+        .detail-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 16px;
+            margin: 26px 0;
+        }
+
+        .back-link {
+            color: #6960c7;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .detail-header,
+            .detail-panel {
+                padding: 22px 19px;
+            }
+
+            .match-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .score-number {
+                font-size: 29px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <main class="detail-container">
 
+        <section class="detail-header">
+            <div class="brand">AI Job Assistant</div>
 
-<div class="job-card">
-    <h1>{{ job.title }}</h1>
+            <h1>{{ job.title }}</h1>
 
-    <p><strong>Company:</strong> {{ job.company }}</p>
-    <p><strong>Location:</strong> {{ job.location }}</p>
+            <div class="detail-meta">
+                <span class="badge">🏢 {{ job.company }}</span>
+                <span class="badge">📍 {{ job.location }}</span>
+            </div>
 
-    <p>{{ job.description }}</p>
+            <p>
+                Bu ilanın gereksinimlerini incele ve CV'nle
+                beceri uyumunu keşfet.
+            </p>
 
-    <h2>AI Analysis</h2>
+            <a class="job-link"
+               href="{{ job.url }}"
+               target="_blank"
+               rel="noopener noreferrer">
+                İlana Git ↗
+            </a>
+        </section>
 
-    <p><strong>Required technical skills:</strong></p>
+        <section class="detail-panel">
+            <h2>📋 İş İlanı Hakkında</h2>
+            <p>{{ job.description }}</p>
+        </section>
 
-    {% if analysis.skills %}
-        <ul>
-            {% for skill in analysis.skills %}
-                <li>{{ skill }}</li>
-            {% endfor %}
-        </ul>
+        <section class="detail-panel">
+            <h2>🤖 Teknik Beceri Analizi</h2>
 
-        <p>Skill count: {{ analysis.skill_count }}</p>
-    {% else %}
-        <p>No technical skills found.</p>
-    {% endif %}
+            {% if analysis.skills %}
+                <p>İlanda tespit edilen teknik beceriler:</p>
 
-    <h2>CV Match</h2>
+                <ul class="skill-list">
+                    {% for skill in analysis.skills %}
+                        <li>{{ skill }}</li>
+                    {% endfor %}
+                </ul>
 
-{% if match_result and match_result.total_job_skills > 0 %}
+                <p>
+                    <strong>Toplam beceri:</strong>
+                    {{ analysis.skill_count }}
+                </p>
+            {% else %}
+                <p class="notice">
+                    Bu ilanda teknik beceri tespit edilemedi.
+                </p>
+            {% endif %}
+        </section>
 
-    <div class="match-score">
+        <section class="detail-panel">
+            <h2>✨ CV ve İş Uyumu</h2>
 
-        <p>
-            <strong>Match Score:</strong>
-            {{ match_result.match_score }}%
-        </p>
+            {% if match_result and match_result.total_job_skills > 0 %}
 
-        <p>
-            {{ match_result.matched_skills|length }}
-            /
-            {{ match_result.total_job_skills }}
-            required skills matched.
-        </p>
+                <div class="score-heading">
+                    <strong>CV eşleşme puanın</strong>
+                    <span class="score-number">
+                        {{ match_result.match_score }}%
+                    </span>
+                </div>
 
-        <div class="match-bar">
-            <div
-                class="match-fill"
-                style="width: {{ match_result.match_score }}%;"
-            ></div>
+                <div class="match-bar"
+                     role="progressbar"
+                     aria-label="CV eşleşme puanı"
+                     aria-valuemin="0"
+                     aria-valuemax="100"
+                     aria-valuenow="{{ match_result.match_score }}">
+                    <div class="match-fill"
+                         style="width: {{ match_result.match_score }}%;">
+                    </div>
+                </div>
+
+                <p>
+                    <strong>{{ match_result.matched_skills|length }}</strong>
+                    / {{ match_result.total_job_skills }}
+                    gerekli beceri eşleşti.
+                </p>
+
+                <div class="match-columns">
+                    <div class="skill-group">
+                        <h3>✅ Eşleşen Beceriler</h3>
+
+                        <ul>
+                            {% for skill in match_result.matched_skills %}
+                                <li>{{ skill }}</li>
+                            {% empty %}
+                                <li>Henüz eşleşen beceri yok.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="skill-group">
+                        <h3>📚 Geliştirilebilecek Beceriler</h3>
+
+                        <ul>
+                            {% for skill in match_result.missing_skills %}
+                                <li>{{ skill }}</li>
+                            {% empty %}
+                                <li>Eksik beceri görünmüyor.</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+            {% else %}
+
+                {% if match_result %}
+                    <p class="notice">
+                        Bu ilanda teknik beceri belirtilmediği için
+                        eşleşme puanı hesaplanamıyor.
+                    </p>
+                {% else %}
+                    <p class="notice">
+                        CV yüklemediğin için henüz eşleşme yapılamıyor.
+                    </p>
+
+                    <a class="job-link" href="{% url 'upload_cv' %}">
+                        CV'ni Yükle
+                    </a>
+                {% endif %}
+
+            {% endif %}
+        </section>
+
+        <div class="detail-actions">
+            <a class="back-link" href="{% url 'job_list' %}">
+                ← Tüm İlanlara Dön
+            </a>
+
+            <a class="back-link" href="{% url 'my_cvs' %}">
+                CV'lerimi Görüntüle →
+            </a>
         </div>
 
-    </div>
-
-    <p><strong>Matched Skills:</strong></p>
-
-    <ul>
-        {% for skill in match_result.matched_skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
-
-    <p><strong>Missing Skills:</strong></p>
-
-    <ul>
-        {% for skill in match_result.missing_skills %}
-            <li>{{ skill }}</li>
-        {% endfor %}
-    </ul>
-
-{% else %}
-
-    {% if match_result %}
-        <p>
-            No technical skills were specified in this job posting.
-            A match score cannot be calculated.
-        </p>
-    {% else %}
-        <p>You haven't uploaded a CV yet.</p>
-
-        <a href="{% url 'upload_cv' %}">Upload your CV</a>
-    {% endif %}
-
-{% endif %}
-
-    <a class="job-link" href="{{ job.url }}" target="_blank">
-        İlana Git
-    </a>
-</div>
-
-<a href="{% url 'job_list' %}">← Tüm İlanlara Dön</a>
-
-
+    </main>
 </body>
 </html>

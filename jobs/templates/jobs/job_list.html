@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="{% static 'jobs/style.css' %}">
 </head>
 <body>
+    <nav>
+    <span>Merhaba, {{ request.user.username }}!</span>
+    <a href="{% url 'upload_cv' %}">CV Yükle</a>
+    <a href="{% url 'my_cvs' %}">CV'lerim</a>
+    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Çıkış Yap</button>
+    </form>
+</nav>
 
     <h1>Available Jobs</h1>
 

@@ -1,169 +1,308 @@
+
+/* Genel sayfa */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     margin: 0;
-    padding: 40px;
+    padding: 32px 5%;
+    min-height: 100vh;
+    color: #202747;
+    background:
+        radial-gradient(ellipse at 10% 5%, rgba(124, 131, 255, 0.22), transparent 40%),
+        radial-gradient(ellipse at 95% 90%, rgba(177, 140, 255, 0.22), transparent 40%),
+        #f4f5ff;
 }
 
-h1 {
-    text-align: center;
-}
-
-.job-card {
-
-    background-color: white;
-
-    max-width: 700px;
-
-    margin: 20px auto;
-
-    padding: 25px;
-
-    border-radius: 12px;
-
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-}
-
-.job-card:hover {
-
-    transform: translateY(-3px);
-
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-
-}
-
-h2 {
-
-    margin-top: 0;
-
-    margin-bottom: 12px;
-
-}
-
-h2 a {
-
-    color: #222;
-
-    text-decoration: none;
-
-}
-
-h2 a:hover {
-
-    text-decoration: underline;
-
-}
-
-a {
-    display: inline-block;
-    margin-top: 10px;
-    text-decoration: none;
-}
-
-.job-link {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 16px;
-    background-color: #333;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-}
-.job-link:hover {
-    opacity: 0.8;
-}
-
-.search-form {
+/* Üst menü */
+nav {
+    max-width: 1200px;
+    margin: 0 auto 42px;
+    padding: 16px 22px;
     display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 22px;
+    flex-wrap: wrap;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 35px rgba(42, 49, 105, 0.08);
 }
 
-.search-form input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 16px;
+nav span {
+    margin-right: auto;
+    font-weight: 700;
+    color: #303968;
 }
 
-.search-form button {
-    padding: 10px 20px;
-    background-color: #333;
-    color: white;
+nav a {
+    color: #4d4c91;
+    font-weight: 600;
+    text-decoration: none;
+    margin: 0;
+}
+
+nav a:hover {
+    color: #7964db;
+}
+
+nav form {
+    margin: 0;
+}
+
+nav button {
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
+    padding: 10px 15px;
+    background: #eceaff;
+    color: #4d438d;
+    font-weight: 600;
     cursor: pointer;
 }
 
-.search-form button:hover {
-    opacity: 0.8;
+nav button:hover {
+    background: #ded9ff;
 }
-.job-meta {
 
+/* Başlık */
+h1 {
+    max-width: 1200px;
+    margin: 0 auto 28px;
+    color: #252d59;
+    font-size: clamp(28px, 4vw, 38px);
+    letter-spacing: -1px;
+}
+
+/* Arama ve filtre alanı */
+.search-form {
+    max-width: 1200px;
+    margin: 0 auto 32px;
+    padding: 18px;
     display: flex;
-
-    gap: 10px;
-
-    margin: 15px 0;
-
+    align-items: center;
+    gap: 12px;
     flex-wrap: wrap;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 10px 30px rgba(42, 49, 105, 0.06);
+}
 
+.search-form input,
+.search-form select {
+    flex: 1;
+    min-width: 150px;
+    padding: 13px 14px;
+    border: 1px solid #e0e3f2;
+    border-radius: 11px;
+    background: #fff;
+    color: #303653;
+    font-size: 15px;
+}
+
+.search-form input:focus,
+.search-form select:focus {
+    outline: 2px solid #c5bbff;
+    border-color: transparent;
+}
+
+.search-form button {
+    padding: 13px 22px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #7778ed, #8f70db);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.search-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(119, 120, 237, 0.28);
+}
+
+/* İş ilanı kartları */
+.job-card {
+    max-width: 1000px;
+    margin: 18px auto;
+    padding: 28px 30px;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 32px rgba(42, 49, 105, 0.07);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow-wrap: anywhere;
+}
+
+.job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 38px rgba(42, 49, 105, 0.12);
+}
+
+h2 {
+    margin: 0 0 14px;
+    font-size: 23px;
+    line-height: 1.4;
+}
+
+h2 a {
+    color: #30376e;
+    text-decoration: none;
+    margin: 0;
+}
+
+h2 a:hover {
+    color: #7770df;
+}
+
+.job-card p {
+    line-height: 1.7;
+    color: #5d6278;
+}
+
+.job-card strong {
+    color: #343b60;
+}
+
+.job-meta {
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
+    flex-wrap: wrap;
 }
 
 .badge {
-
-    background-color: #f0f2f5;
-
-    padding: 6px 10px;
-
-    border-radius: 20px;
-
-    font-size: 14px;
-
-    color: #444;
-
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 30px;
+    background: #f0efff;
+    color: #57518f;
+    font-size: 13px;
+    font-weight: 600;
 }
-@media (max-width: 600px) {
 
+/* İlana git butonu */
+.job-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 12px 20px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #7778ed, #8f70db);
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.job-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 18px rgba(119, 120, 237, 0.25);
+}
+
+/* Sonuç bulunamadı */
+body > p {
+    max-width: 1000px;
+    margin: 24px auto;
+    padding: 22px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.8);
+    color: #626782;
+}
+
+/* Sayfalama */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 32px auto;
+    color: #505675;
+}
+
+.pagination a {
+    display: inline-block;
+    margin: 0;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: #fff;
+    color: #57518f;
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0 4px 14px rgba(42, 49, 105, 0.07);
+}
+
+.pagination a:hover {
+    background: #eceaff;
+}
+
+/* AI eşleşme puanı */
+.match-score {
+    margin: 20px 0;
+    color: #42496c;
+}
+
+.match-bar {
+    width: 100%;
+    height: 12px;
+    background: #e8e8f5;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.match-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #7778ed, #b18cff);
+    border-radius: 20px;
+}
+
+/* Telefon ve tablet uyumu */
+@media (max-width: 700px) {
     body {
-        padding: 20px;
+        padding: 18px 14px;
+    }
+
+    nav {
+        justify-content: flex-start;
+        gap: 14px;
+        padding: 16px;
+        margin-bottom: 30px;
+    }
+
+    nav span {
+        flex-basis: 100%;
+    }
+
+    h1 {
+        margin-bottom: 20px;
     }
 
     .search-form {
         flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
     }
 
     .search-form input,
     .search-form select,
     .search-form button {
         width: 100%;
-        box-sizing: border-box;
+        min-width: 0;
     }
 
     .job-card {
-        padding: 20px;
+        padding: 22px 19px;
+        border-radius: 16px;
     }
 
-}
-
-.match-score {
-    margin: 20px 0;
-}
-
-.match-bar {
-    width: 100%;
-    height: 20px;
-    background-color: #e5e7eb;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.match-fill {
-    height: 100%;
-    background-color: #333;
-    border-radius: 10px;
+    h2 {
+        font-size: 20px;
+    }
 }

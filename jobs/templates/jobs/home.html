@@ -1,0 +1,466 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Job Assistant | Kariyerine Yön Ver</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: #fff;
+            background:
+                radial-gradient(ellipse at 15% 20%, #7c83ff 0%, transparent 40%),
+                radial-gradient(ellipse at 85% 75%, #b18cff 0%, transparent 42%),
+                linear-gradient(135deg, #111a3b, #263c75, #30245c);
+        }
+
+        .container {
+            width: min(1120px, 90%);
+            margin: 0 auto;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 28px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #c3b6ff;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .2);
+        }
+
+        .btn-primary {
+            color: #22264e;
+            background: linear-gradient(135deg, #c3b6ff, #fff);
+        }
+
+        .btn-outline {
+            color: white;
+            border: 1px solid rgba(255, 255, 255, .4);
+            background: rgba(255, 255, 255, .08);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            align-items: center;
+            gap: 55px;
+            padding: 78px 0 90px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 9px 14px;
+            border: 1px solid rgba(255, 255, 255, .2);
+            border-radius: 30px;
+            background: rgba(255, 255, 255, .1);
+            color: #e0dcff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        h1 {
+            margin: 24px 0 20px;
+            font-size: clamp(38px, 5.5vw, 62px);
+            line-height: 1.12;
+            letter-spacing: -2px;
+        }
+
+        h1 span {
+            color: #c3b6ff;
+        }
+
+        .hero-text {
+            max-width: 540px;
+            color: #e0e4ff;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .hero-note {
+            margin-top: 22px;
+            color: #d2d7f8;
+            font-size: 13px;
+        }
+
+        .visual {
+            padding: 28px;
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 26px;
+            background: rgba(255, 255, 255, .1);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 24px 60px rgba(0, 0, 0, .2);
+        }
+
+        .visual-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .visual-icon {
+            display: flex;
+            width: 48px;
+            height: 48px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: rgba(195, 182, 255, .2);
+            font-size: 25px;
+        }
+
+        .visual-title {
+            font-weight: 800;
+        }
+
+        .visual-subtitle {
+            margin-top: 5px;
+            color: #d6daf9;
+            font-size: 12px;
+        }
+
+        .match-card {
+            padding: 20px;
+            margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, .17);
+            border-radius: 17px;
+            background: rgba(255, 255, 255, .09);
+        }
+
+        .match-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .match-row strong {
+            color: #ded6ff;
+        }
+
+        .progress {
+            height: 10px;
+            overflow: hidden;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .15);
+        }
+
+        .progress-fill {
+            width: 85%;
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #9d95ff, #dfc5ff);
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .tag {
+            padding: 7px 10px;
+            border-radius: 30px;
+            background: rgba(195, 182, 255, .17);
+            color: #f0eaff;
+            font-size: 12px;
+        }
+
+        .features {
+            padding: 50px 0 75px;
+            text-align: center;
+        }
+
+        .features h2 {
+            margin-bottom: 12px;
+            font-size: clamp(28px, 4vw, 38px);
+        }
+
+        .features-intro {
+            max-width: 580px;
+            margin: 0 auto 35px;
+            color: #dfe3ff;
+            line-height: 1.8;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            text-align: left;
+        }
+
+        .feature {
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, .18);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, .08);
+        }
+
+        .feature-icon {
+            font-size: 28px;
+        }
+
+        .feature h3 {
+            margin: 16px 0 10px;
+            font-size: 18px;
+        }
+
+        .feature p {
+            margin-bottom: 0;
+            color: #dfe3ff;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        footer {
+            padding: 25px 0;
+            border-top: 1px solid rgba(255, 255, 255, .15);
+            color: #d2d7f8;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 35px;
+                padding: 45px 0 60px;
+            }
+
+            .visual {
+                max-width: 520px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .nav-actions {
+                width: 100%;
+            }
+
+            .nav-actions .btn {
+                flex: 1;
+            }
+
+            h1 {
+                letter-spacing: -1px;
+            }
+
+            .hero-text {
+                font-size: 15px;
+            }
+
+            .visual {
+                padding: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav>
+            <a class="logo" href="{% url 'home' %}">
+                AI <span>JOB</span> ASSISTANT
+            </a>
+
+            <div class="nav-actions">
+                <a class="btn btn-outline" href="{% url 'login' %}">
+                    Giriş Yap
+                </a>
+
+                <a class="btn btn-primary" href="{% url 'register' %}">
+                    Ücretsiz Başla
+                </a>
+            </div>
+        </nav>
+
+        <main>
+            <section class="hero">
+                <div>
+                    <span class="eyebrow">
+                        ✨ Kariyer yolculuğunda akıllı yardımcın
+                    </span>
+
+                    <h1>
+                        Doğru işe giden yolu
+                        <span>birlikte keşfedelim.</span>
+                    </h1>
+
+                    <p class="hero-text">
+                        CV'ndeki teknik becerileri keşfet, iş ilanlarının
+                        gereksinimlerini incele ve kariyerindeki bir sonraki
+                        adım için kendine daha bilinçli bir yol çiz.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="{% url 'register' %}">
+                            Hemen Başla →
+                        </a>
+
+                        <a class="btn btn-outline" href="{% url 'login' %}">
+                            Hesabım Var
+                        </a>
+                    </div>
+
+                    <p class="hero-note">
+                        💜 Kariyerini keşfetmek için ilk adımını at.
+                    </p>
+                </div>
+
+                <div class="visual">
+                    <div class="visual-top">
+                        <div class="visual-icon">🤖</div>
+
+                        <div>
+                            <div class="visual-title">Akıllı CV Analizi</div>
+                            <div class="visual-subtitle">
+                                Kariyerine farklı bir açıdan bak
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="match-card">
+                        <div class="match-row">
+                            <span>Örnek iş eşleşmesi</span>
+                            <strong>Örnek görünüm</strong>
+                        </div>
+
+                        <div class="progress">
+                            <div class="progress-fill"></div>
+                        </div>
+
+                        <div class="tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Django</span>
+                            <span class="tag">SQL</span>
+                        </div>
+                    </div>
+
+                    <div class="match-card">
+                        <div class="match-row">
+                            <span>📄 CV'ni incele</span>
+                            <strong>01</strong>
+                        </div>
+
+                        <div class="match-row">
+                            <span>🔍 Becerilerini keşfet</span>
+                            <strong>02</strong>
+                        </div>
+
+                        <div class="match-row" style="margin-bottom:0;">
+                            <span>🎯 İlanlarla karşılaştır</span>
+                            <strong>03</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="features">
+                <h2>Kariyer yolculuğunda yanında</h2>
+
+                <p class="features-intro">
+                    CV'ni daha yakından tanı, ilanların teknik gereksinimlerini
+                    incele ve becerilerini geliştirmek için yeni fırsatlar keşfet.
+                </p>
+
+                <div class="feature-grid">
+                    <article class="feature">
+                        <div class="feature-icon">📄</div>
+                        <h3>CV Analizi</h3>
+                        <p>
+                            CV'ni yükle ve dosyanda tespit edilen teknik
+                            becerileri tek bir yerde görüntüle.
+                        </p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <h3>İş Eşleştirme</h3>
+                        <p>
+                            İş ilanlarının gerektirdiği becerilerle CV'ndeki
+                            becerileri karşılaştır.
+                        </p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Kariyerini Geliştir</h3>
+                        <p>
+                            Eşleşen ve eksik becerilerini görerek öğrenme
+                            hedeflerini daha bilinçli belirle.
+                        </p>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            AI Job Assistant · Kariyer yolculuğuna akıllı bir başlangıç.
+        </footer>
+    </div>
+</body>
+</html>
